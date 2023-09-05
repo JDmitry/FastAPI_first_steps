@@ -1,8 +1,10 @@
-from fastapi import FastAPI, Path
-
+from fastapi import FastAPI, Response, Path
+ 
 app = FastAPI()
-
-@app.get("/users/{name}")
-def users(name:str = Path(min_length=3, max_length=20)):
-    return {"user_id": name}
-
+ 
+@app.get("/users/{id}", status_code=200)
+def users(response: Response, id: int = Path()):
+    if id < 1:
+        response.status_code = 400
+        return {"message": "Incorrect Data"}
+    return  {"message": f"Id = {id}"}
